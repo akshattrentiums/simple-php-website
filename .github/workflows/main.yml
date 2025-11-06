@@ -24,4 +24,16 @@ jobs:
       - name: Installing dependencies
         run: composer install
         
+      - name: validate compose.json and composer.lock
+        run: composer validate --strict
+
+      - name: Caching dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: php lint
+        run: find . -name "*.php" -exec php -l {} \;
+        
       
