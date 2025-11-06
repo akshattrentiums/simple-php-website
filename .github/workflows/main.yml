@@ -39,13 +39,5 @@ jobs:
       - name: Security Check
         run: composer audit
 
-      - name: Notify Slack
-        uses: rtCamp/action-slack-notify@v2
-        # Ensure SLACK_WEBHOOK is set in repository secrets for Slack notifications to work
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: "PHP Basic Website CI Workflow - Job ${{ job.status }} : <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
-          SLACK_USERNAME: "Akshat"
-          SLACK_EMAIL: "akshatg@trentiums.net"
+      
       
