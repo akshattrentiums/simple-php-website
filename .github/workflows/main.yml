@@ -40,7 +40,7 @@ jobs:
         run: composer audit
 
       - name: composer test
-        run: composer analyze 
+        run: composer analyse 
           echo "All tests passed successfully!"
 
       
