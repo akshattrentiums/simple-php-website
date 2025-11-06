@@ -1,0 +1,15 @@
+<?php
+
+namespace Tests;
+
+use PHPUnit\Framework\TestCase;
+use App\Model\User;
+
+class UserTest extends TestCase
+{
+    public function testUserGreet()
+    {
+        $user = new User("Akshat");
+        $this->assertEquals("Hello, Akshat!", $user->greet());
+    }
+}
