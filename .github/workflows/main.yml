@@ -21,4 +21,9 @@ jobs:
              uses: shivammathur/setup-php@v2
              with:
                php-version: '8.2'
+           - name: verifying user name and email
+             run: |
+               git config --global user.name: "akshattrentiums"
+               git config --global user.email: "akshatg@trentiums.net"
+
                  
