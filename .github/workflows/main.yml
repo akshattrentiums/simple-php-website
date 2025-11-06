@@ -1,10 +1,13 @@
 name: php basic website ci workflow
-on: 
+on:
   push:
+    # run on both default branch names to avoid missing triggers
     branches:
+      - master
       - main
   pull_request:
     branches:
+      - master
       - main
 
   schedule:
@@ -12,18 +15,18 @@ on:
   workflow_dispatch:
 
 jobs:
-    bulids:
-        runs-on: ubuntu-latest
-        steps:
-           - name: Checkout code
-             uses: actions/checkout@v3
-           - name: setting up php
-             uses: shivammathur/setup-php@v2
-             with:
-               php-version: '8.2'
-           - name: verifying user name and email
-             run: |
-               git config --global user.name: "akshattrentiums"
-               git config --global user.email: "akshatg@trentiums.net"
+  builds:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: setting up php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - name: verifying user name and email
+        run: |
+          # use correct git config syntax (no colon after key)
+          git config --global user.name "akshattrentiums"
+          git config --global user.email "akshatg@trentiums.net"
 
-                 
