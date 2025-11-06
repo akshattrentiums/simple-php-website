@@ -39,7 +39,8 @@ jobs:
       - name: Security Check
         run: composer audit
 
-      - name: Run Tests
-        run: vendor/bin/phpunit 
+      - name: composer test
+        run: composer test && composer analyze 
+          echo "All tests passed successfully!"
 
       
