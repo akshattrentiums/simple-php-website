@@ -1,0 +1,70 @@
+workflows:
+  mobile-prod-release:
+    name: Android + iOS Release (Manual Signing)
+
+    max_build_duration: 120
+
+    environment:
+      node: 18
+      xcode: latest
+      cocoapods: default
+
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.company.app
+
+      vars:
+        EXPO_TOKEN: Encrypted(EXPO_TOKEN)
+        APPLE_ID: Encrypted(APPLE_ID)
+        APPLE_APP_SPECIFIC_PASSWORD: Encrypted(APPLE_APP_SPECIFIC_PASSWORD)
+
+      android_signing:
+        - keystore_reference
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+
+    scripts:
+      # ---------------- CI ----------------
+      - name: Install dependencies
+        script: npm install
+
+      - name: Run tests
+        script: npm test
+
+      - name: Run lint
+        script: npm run lint
+
+      # ---------------- EXPO ----------------
+      - name: Expo login
+        script: npx expo login --token $EXPO_TOKEN
+
+      # ---------------- IOS SIGNING ----------------
+      - name: Set up iOS signing
+        script: |
+          keychain initialize
+          keychain add-certificates
+
+      # ---------------- BUILD ----------------
+      - name: Build Android & iOS
+        script: |
+          npx expo prebuild
+          npx expo eas build --platform android --non-interactive
+          npx expo eas build --platform ios --non-interactive
+
+    artifacts:
+      - "*.ipa"
+      - "*.aab"
+
+    publishing:
+      google_play:
+        credentials: Encrypted(GOOGLE_PLAY_SERVICE_ACCOUNT)
+        track: production
+
+      app_store_connect:
+        apple_id: $APPLE_ID
+        password: $APPLE_APP_SPECIFIC_PASSWORD
